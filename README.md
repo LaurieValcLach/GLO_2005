@@ -32,7 +32,7 @@ Fix the network (#2)
 ```
 ## create virtual environnement
 ### Linux
-sudo apt-get install python3-venv    # If needed
+sudo apt-get install python3-venv  
 python3 -m venv .venv
 source .venv/bin/activate
 

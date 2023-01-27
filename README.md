@@ -30,30 +30,4 @@ For example,
 ```
 Fix the network (#2)
 ```
-## create virtual environnement
-### Linux
-```bash
-sudo apt-get install python3-venv 
-```
-```bash
-python3 -m venv .venv
-```
-```bash
-source .venv/bin/activate
-```
 
-### macOS
-```bash
-python3 -m venv .venv
-```
-```bash
-source .venv/bin/activate
-```
-
-### Windows
-```bash
-py -3 -m venv .venv
-```
-```bash
-.venv\scripts\activate
-```

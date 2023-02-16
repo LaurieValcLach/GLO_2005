@@ -1,0 +1,35 @@
+body {
+	background-color:bisque;
+}
+
+p {
+	font-family: "Times New Roman";
+	color: black;
+	margin-left: 100px;
+	font-weight: bold;	
+}
+
+.centre {
+	text-align: center;
+	color: red;
+}
+.ui-button  {
+
+}
+
+.left {
+	text-align: left;
+	color: black;
+}
+
+.right{
+	text-align: right;
+	color: black;
+}
+
+#cadre {
+	border-style: dashed;
+	border-color: red;
+	background-color: yellow;
+	text-transform: uppercase;
+}

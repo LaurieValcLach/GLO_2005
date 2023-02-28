@@ -1,6 +1,14 @@
 CREATE DATABASE IF NOT EXISTS blog_bd;
 USE blog_bd;
 
+DROP TABLE IF EXISTS suivre;
+DROP TABLE IF EXISTS compte;
+DROP TRIGGER IF EXISTS amour_propre_defendu;
+DROP TRIGGER IF EXISTS insert_nb_amis;
+DROP TRIGGER IF EXISTS delete_nb_amis;
+DROP FUNCTION IF EXISTS nouveau_nb_amis;
+DROP PROCEDURE IF EXISTS update_all_nb_amis;
+
 CREATE TABLE IF NOT EXISTS compte (
     courriel varchar(50),
     motpasse varchar(12),
@@ -22,6 +30,7 @@ VALUES ('alice@ulaval.ca', '12345', 'Alice', 'MonChat.jpg', 0),
  autant qu'il ait besoin de suivre qqun (être dans la table suivre). c'est le même principe pour les amis,
  ils doivent nécessairement être associés à un compte.
  */
+
 CREATE TABLE IF NOT EXISTS suivre
     (utilisateur varchar(50),
      ami         varchar(50),
@@ -38,6 +47,7 @@ CREATE TABLE IF NOT EXISTS suivre
 /*
  un compte utilisateur ne peut pas se suivre soi-même, on lance une erreur le cas échéant
  */
+
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS amour_propre_defendu
     BEFORE INSERT ON suivre
@@ -51,6 +61,7 @@ DELIMITER ;
 /*
  lorsqu'on ajoute un ami dans la liste suivre, on modifie le nombre d'amis
  */
+
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS insert_nb_amis
     AFTER INSERT ON suivre
@@ -61,12 +72,11 @@ CREATE TRIGGER IF NOT EXISTS insert_nb_amis
         UPDATE compte C SET C.nb_amis = (SELECT nouveau_nb_amis(NEW.utilisateur)) WHERE (C.courriel = NEW.utilisateur);
     END //
 DELIMITER ;
-drop trigger insert_nb_amis;
-
-SELECT nouveau_nb_amis('alice@ulaval.ca') from compte where courriel = 'alice@ulaval.ca';
+#SELECT nouveau_nb_amis('alice@ulaval.ca') from compte where courriel = 'alice@ulaval.ca';
 /*
  lorsqu'on retire un ami ou un utilisateur dans la liste suivre, on modifie le nombre d'amis de l'utilisateur
  */
+
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS delete_nb_amis
     AFTER DELETE ON suivre
@@ -82,7 +92,7 @@ CREATE TRIGGER IF NOT EXISTS delete_nb_amis
                          #WHERE C.courriel = S.utilisateur GROUP BY utilisateur) N);
     END //
 DELIMITER ;
-drop trigger delete_nb_amis;
+
 /*
  lorsque l'on supprime un compte, il faut retirer l'utilisateur de la relation suivre avant
  */
@@ -115,7 +125,7 @@ drop trigger after_delete_compte;*/
 
 
 DELIMITER //
-CREATE FUNCTION nouveau_nb_amis (courriel varchar(100))
+CREATE FUNCTION IF NOT EXISTS nouveau_nb_amis  (courriel varchar(100))
 RETURNS INTEGER
 BEGIN
     DECLARE decompte INTEGER;
@@ -131,7 +141,7 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
-/*drop function nouveau_nb_amis;
+/*
 SELECT nb_amis from (SELECT utilisateur, COUNT(*) AS nb_amis FROM suivre, compte WHERE courriel = suivre.utilisateur GROUP BY utilisateur) N WHERE N.utilisateur = 'alice@ulaval.ca';
 CREATE TEMPORARY TABLE IF NOT EXISTS nb_amis_compte (SELECT utilisateur, COUNT(*) AS nb_amis FROM suivre, compte WHERE courriel = suivre.utilisateur GROUP BY utilisateur);
 SELECT nouveau_nb_amis('bob@ulaval.ca');
@@ -142,7 +152,7 @@ DROP TABLE test;*/
 #DROP trigger before_delete_compte;
 #show triggers ;
 
-SELECT * FROM compte;
+/*SELECT * FROM compte;
 INSERT INTO compte VALUES ('denise@ulaval.ca', '88888888', 'Denise', 'reine.jpg', 0);
 INSERT INTO compte VALUES ('bob@ulaval.ca', 'qwerty', 'Bob', 'Grimlock.jpg', 0);
 INSERT INTO compte VALUES ('alice@ulaval.ca', '12345', 'Alice', 'MonChat.jpg', 0);
@@ -155,17 +165,18 @@ DELETE FROM compte WHERE courriel = 'alice@ulaval.ca';
 DELETE FROM suivre WHERE ami = 'bob@ulaval.ca';
 DELETE FROM suivre WHERE ami = 'alice@ulaval.ca';
 DELETE FROM suivre WHERE ami = 'cedric@ulaval.ca';
-DELETE FROM suivre WHERE utilisateur = 'alice@ulaval.ca';
+DELETE FROM suivre WHERE utilisateur = 'alice@ulaval.ca';*/
 
 
-SELECT nouveau_nb_amis('alice@ulaval.ca');
-SELECT nouveau_nb_amis('bob@ulaval.ca');
+/*SELECT nouveau_nb_amis('alice@ulaval.ca');
+SELECT nouveau_nb_amis('bob@ulaval.ca');*/
 
 /*
  ici je crois qu'il faut créer une procédure avec un curseur pour traiter le problème plus haut.
  on veut créer une nouvelle table qui contient tous les votes mis à jour. Je n'arrive pas à faire la modif automatiquement,
  car la procédure pour delete fait une modif en même temps (du moins je pense)
  */
+
 DELIMITER //
 CREATE PROCEDURE update_all_nb_amis ()
 BEGIN
@@ -187,11 +198,11 @@ BEGIN
     CLOSE curseur;
 END //
 DELIMITER ;
-drop procedure after_delete_update_nb_amis;
+#
 
 
-CALL after_delete_update_nb_amis();
+#CALL after_delete_update_nb_amis();
 
 
-SELECT utilisateur, count(*) AS nb_amis FROM suivre GROUP BY utilisateur;
-show triggers ;
+/*SELECT utilisateur, count(*) AS nb_amis FROM suivre GROUP BY utilisateur;
+show triggers ;*/

@@ -18,11 +18,11 @@ CREATE TABLE IF NOT EXISTS compte (
     PRIMARY KEY (courriel)
 );
 # format des données à insérer
-/*INSERT INTO compte
+INSERT INTO compte
 VALUES ('alice@ulaval.ca', '12345', 'Alice', 'MonChat.jpg', 0),
        ('bob@ulaval.ca', 'qwerty', 'Bob', 'Grimlock.jpg', 0),
        ('cedric@ulaval.ca', 'password', 'Cédric', 'smiley.gif', 0),
-       ('denise@ulaval.ca', '88888888', 'Denise', 'reine.jpg', 0);*/
+       ('denise@ulaval.ca', '88888888', 'Denise', 'reine.jpg', 0);
 /*
  on a les clées qui permettent d'éviter les doublons, soit la combinaison utilisateur
  et ami en plus de les update et de les supprimer si ils sont supprimés dans la table compte,etc.
@@ -56,7 +56,7 @@ CREATE TRIGGER IF NOT EXISTS amour_propre_defendu
         IF NEW.ami = NEW.utilisateur THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Son amour à ses limites! On ne peut pas se suivre soit-même';
         END IF;
-    END//
+    END //
 DELIMITER ;
 /*
  lorsqu'on ajoute un ami dans la liste suivre, on modifie le nombre d'amis

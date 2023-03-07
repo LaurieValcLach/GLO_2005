@@ -16,7 +16,7 @@ def login():
     courriel = '"' + request.form.get('courriel') + '"'
     passe = request.form.get('motpasse')
 
-    conn = pymysql.connect(host='localhost', user='root', password='', db='testdb')
+    conn = pymysql.connect(host='localhost', user='laurie', password='', db='Projet_GLO2005')
     cmd = 'SELECT motpasse FROM utilisateurs WHERE courriel=' + courriel + ';'
     cur = conn.cursor()
     cur.execute(cmd)

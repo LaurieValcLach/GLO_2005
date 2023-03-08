@@ -6,11 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="fc4a6767-4cc9-4e37-ad82-8accad48d80d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/commandes.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/configuration_bd.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/static/MonFichierCode.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/static/MonFichierStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/home_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/login_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/profil_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/home.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/login.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/profil.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/bienvenu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/categorie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/home.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/publier.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

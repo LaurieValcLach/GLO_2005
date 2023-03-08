@@ -13,3 +13,20 @@ ReseauPartage/config/DB_connection.py
 
 
 .idea/dataSources.local.xml
+
+
+# Ignorer l'entièreté des fichiers/dossiers
+/**/*
+
+# Ne PAS ignorer les fichiers Python et autre fichier important
+!/config/
+!/Controllers/
+!/database/
+!/FakeData/
+!/models/
+!/static/
+!/templates/
+!/views/
+!/flask.app/
+!/README.md
+!/.gitignore

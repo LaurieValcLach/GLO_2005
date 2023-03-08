@@ -8,21 +8,21 @@ def executerFichierSQl(nomFichier, conn):
     estCommentaire = False
     estDelimiter = False
     delimitation = ""
-    #on veut enlever les commentaires, les DELIMITER, les //
-    #et les ; à la fin des DELIMITER (ce dernier optionnel)
+    # on veut enlever les commentaires, les DELIMITER, les //
+    # et les ; à la fin des DELIMITER (ce dernier optionnel)
     for i, line in enumerate(fichierSQL):
         line = line.strip()
-        if ("*/") in line:
+        if "*/" in line:
             estCommentaire = False
             continue
         if estCommentaire:
             continue
-        if ("/*") in line:
+        if "/*" in line:
             estCommentaire = True
             continue
-        if ("#") in line:
+        if "#" in line:
             continue
-        if ("DELIMITER") in line:
+        if "DELIMITER" in line:
             delimitation += " " + line
             if estDelimiter:
                 delimitation = delimitation.replace("//", "")
@@ -37,7 +37,7 @@ def executerFichierSQl(nomFichier, conn):
             continue
 
         delimitation += " " + line
-        if (";") in line:
+        if ";" in line:
             commandesSQL.append(delimitation.strip())
             delimitation = ""
         cur = conn.cursor()

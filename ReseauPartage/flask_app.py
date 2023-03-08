@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from routes import login, home, profil
+from controllers import login, home, profil
 
 app = Flask(__name__)
 ProfileUtilisateur = {}

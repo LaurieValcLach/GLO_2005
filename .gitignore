@@ -23,9 +23,10 @@ ReseauPartage/config/DB_connection.py
 !/FakeData/
 !/models/
 !/static/
-!/Myconfig/
 !/templates/
 !/views/
 !/flask.app
 !/README.md
 !/.gitignore
+!/auth.py
+!/Hash.py

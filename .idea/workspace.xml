@@ -4,10 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="fc4a6767-4cc9-4e37-ad82-8accad48d80d" name="Changes" comment="plus de catégories, publications basic">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="fc4a6767-4cc9-4e37-ad82-8accad48d80d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/home_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/login_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/profil_controller.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/home.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/login.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/profil.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/bienvenu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/categorie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/home.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/publier.html" beforeDir="false" />
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,13 +34,19 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+<<<<<<< HEAD
         <option value="JavaScript File" />
+=======
+        <option value="Python Script" />
+        <option value="Setup Script" />
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="JsBowerSettings">
     <bower-package value="" />
     <bower.json value="" />
@@ -32,6 +55,12 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2MO788tHNYXGR2Qo3fiFK4WioV2" />
+=======
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MNzNwLBQCqWE5Wc5XW2nvm5vaa" />
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -43,6 +72,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+<<<<<<< HEAD
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/Bruno/Documents/4-Université Laval/Session 2/Modèles et langages des bases de données pour ingénieurs",
     "node.js.detected.package.eslint": "true",
@@ -68,11 +98,53 @@
     <configuration name="publier.js" type="NodeJSConfigurationType" nameIsGenerated="true" node-parameters="&quot;C:\Users\Bruno\Downloads\node-v18.15.0-x64 (1).msi&quot;" path-to-js-file="publier.js" working-dir="$PROJECT_DIR$/7 - demo/templates">
       <method v="2" />
     </configuration>
+=======
+    "last_opened_file_path": "/home/laurie/Documents/H23/BD/Projet_GLO2005",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "configurable.group.project"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ReseauPartage" />
+      <recent name="$PROJECT_DIR$/ReseauPartage/FakeData" />
+      <recent name="$PROJECT_DIR$/7 - demo/FakeData" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="flask_app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="GLO_2005" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ReseauPartage" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ReseauPartage/flask_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.flask_app" />
+      </list>
+    </recent_temporary>
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="fc4a6767-4cc9-4e37-ad82-8accad48d80d" name="Changes" comment="" />
+<<<<<<< HEAD
       <created>1677626615134</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -90,6 +162,13 @@
       <updated>1678228302585</updated>
     </task>
     <option name="localTasksCounter" value="2" />
+=======
+      <created>1677622791622</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677622791622</updated>
+    </task>
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,6 +185,7 @@
       </map>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="VcsManagerConfiguration">
     <MESSAGE value="plus de catégories, publications basic" />
     <option name="LAST_COMMIT_MESSAGE" value="plus de catégories, publications basic" />
@@ -113,4 +193,6 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/GLO_2005$login.coverage" NAME="login Coverage Results" MODIFIED="1674843845828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/7 - demo" />
   </component>
+=======
+>>>>>>> 962c54f873373daef113dddf394f1e5915f4bc68
 </project>

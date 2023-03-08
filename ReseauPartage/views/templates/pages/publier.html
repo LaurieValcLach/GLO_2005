@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>publier</title>
+    <script src = "publier.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/MonFichierStyle.css">
 </head>
     <button onclick="window.location.href='home.html'">
@@ -24,14 +25,17 @@
 <h2>
     Entrez votre message:
 </h2>
-<textarea id="zone-texte" name="zone-text" rows="10" cols="50">
-</textarea>
-<br>
-    <input type="submit" value="publier" name="publier">
-</br>
-
 
 <body>
+
+    <textarea id="zone-texte" name="zone-text" cols="50" rows="10"
+       placeholder = "Écrivez votre message"></textarea>
+
+    <button type="button" onclick="onButtonPublier()"> publier</button>
+
+    <div id="publication">
+
+    </div>
 
 </body>
 </html>

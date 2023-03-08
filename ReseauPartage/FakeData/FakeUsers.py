@@ -1,17 +1,7 @@
 import bcrypt
-import pymysql.cursors
 from faker import Faker
 
-# Creer une connection avec la base de donnee
-madb_connection = pymysql.connect(
-    host='',
-    user='',
-    password='',
-    database='',
-)
-
 """ Ici on permet d'imposer une longueur de charactere maximale a la generation de donnees """
-
 
 def fake_email(max_len):
     fake = Faker()

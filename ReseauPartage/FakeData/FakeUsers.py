@@ -1,7 +1,13 @@
 import bcrypt
 from faker import Faker
 
+from ReseauPartage.Myconfig.database import database_connection
+
+""" établir une connection avec la base de donnee """
+connect = database_connection()
+
 """ Ici on permet d'imposer une longueur de charactere maximale a la generation de donnees """
+
 
 def fake_email(max_len):
     fake = Faker()

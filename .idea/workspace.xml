@@ -6,18 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fc4a6767-4cc9-4e37-ad82-8accad48d80d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/home_controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/login_controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/Controllers/profil_controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/home.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/routes/profil.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/bienvenu.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/categorie.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReseauPartage/templates/publier.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,15 +34,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/laurie/Documents/H23/BD/Projet_GLO2005",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "configurable.group.project"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/laurie/Documents/H23/BD/Projet_GLO2005&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.project&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ReseauPartage" />

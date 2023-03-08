@@ -28,5 +28,6 @@ ReseauPartage/config/DB_connection.py
 !/flask.app
 !/README.md
 !/.gitignore
-!/auth.py
-!/Hash.py
+!/Myconfig/
+
+ReseauPartage/Myconfig/database.py

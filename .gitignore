@@ -24,6 +24,7 @@ ReseauPartage/config/DB_connection.py
 !/ReseauPartage/Myconfig/__init__.py
 !/ReseauPartage/Myconfig/auth.py
 !/ReseauPartage/Myconfig/Hash.py
+
 !/ReseauPartage/static/
 !/ReseauPartage/templates/
 !/ReseauPartage/views/

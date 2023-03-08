@@ -17,17 +17,18 @@ ReseauPartage/config/DB_connection.py
 /**/*
 
 # Ne PAS ignorer les fichiers Python et autre fichier important
-!/config/
-!/Controllers/
-!/database/
-!/FakeData/
-!/models/
-!/static/
-!/templates/
-!/views/
-!/flask.app
-!/README.md
-!/.gitignore
-!/Myconfig/
+!/ReseauPartage/Controllers/
+!/ReseauPartage/database/
+!/ReseauPartage/FakeData/
+!/ReseauPartage/models/
+!/ReseauPartage/Myconfig/__init__.py
+!/ReseauPartage/Myconfig/auth.py
+!/ReseauPartage/Myconfig/Hash.py
+!/ReseauPartage/static/
+!/ReseauPartage/templates/
+!/ReseauPartage/views/
 
-ReseauPartage/Myconfig/database.py
+!/ReseauPartage/flask.app
+!/ReseauPartage/README.md
+!/.gitignore
+!/ReseauPartage/__init__.py

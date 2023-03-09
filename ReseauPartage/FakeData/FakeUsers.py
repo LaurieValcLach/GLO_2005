@@ -1,8 +1,7 @@
-import bcrypt
 from faker import Faker
-
+from ReseauPartage.Myconfig.Password import Password
 from ReseauPartage.Myconfig.database import database_connection
-
+import random
 """ établir une connection avec la base de donnee """
 connect = database_connection()
 
@@ -34,7 +33,7 @@ def fake_name(max_len):
 
 
 # creation d'une instance de curseur pour l'insertion des donnees
-cursor = madb_connection.cursor()
+cursor = connect.cursor()
 
 """
     generation de 100 donnees aleatoire utilisant la librairie faker
@@ -48,18 +47,20 @@ cursor = madb_connection.cursor()
     Nous laissons la valeur par defaut de 12 rounds pour le hashage pour atteindre la meilleure balance performance/securite.
     
 """
+random.seed(42)
+
 for i in range(100):
     courriel = next(fake_email(50))
     nom = next(fake_name(20))
-    password = next(fake_password(12)).encode('utf-8') # bcrypt prend en entree une sequence d'octets
-    password_hash = bcrypt.hashpw(password, bcrypt.gensalt()) # gensalt ajoute une chaine au mot de passe
-
+    password = next(fake_password(12))
+    password_object = Password(password)
+    password_hash = password_object.hash()
     insert_stmt = "INSERT INTO Utilisateurs (courriel, motpasse, nom) VALUES (%s, %s, %s)"
-    data = (courriel, password_hash.decode('utf-8'), nom)
+    data = (courriel, password_hash, nom)
     cursor.execute(insert_stmt, data)
 
 # Sauvegarde des changements apportes a la BD
-madb_connection.commit()
+connect.commit()
 
 # ferme la connection avec la BD
-madb_connection.close()
+connect.close()

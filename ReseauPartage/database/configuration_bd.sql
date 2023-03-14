@@ -1,33 +1,42 @@
 CREATE DATABASE IF NOT EXISTS blog_bd;
 USE blog_bd;
-
+DROP TABLE IF EXISTS commenter;
+DROP TABLE IF EXISTS associer;
 DROP TABLE IF EXISTS suivre;
+DROP TABLE IF EXISTS aimer;
+DROP TABLE IF EXISTS configurer;
 DROP TABLE IF EXISTS publier;
+DROP TABLE IF EXISTS commentaire;
 DROP TABLE IF EXISTS publication;
 DROP TABLE IF EXISTS categorie;
+DROP TABLE IF EXISTS profil;
 DROP TABLE IF EXISTS compte;
 DROP TRIGGER IF EXISTS amour_propre_defendu;
+DROP TRIGGER IF EXISTS narcicisme_defendu;
 DROP TRIGGER IF EXISTS insert_nb_amis;
+DROP TRIGGER IF EXISTS insert_nb_like;
 DROP TRIGGER IF EXISTS delete_nb_amis;
+DROP TRIGGER IF EXISTS delete_nb_like;
 DROP FUNCTION IF EXISTS nouveau_nb_amis;
+DROP FUNCTION IF EXISTS nouveau_nb_like;
 DROP PROCEDURE IF EXISTS update_all_nb_amis;
+DROP PROCEDURE IF EXISTS update_all_nb_like;
 DROP PROCEDURE IF EXISTS publier_dans_categorie;
+DROP PROCEDURE IF EXISTS supprimer_compte;
 
 CREATE TABLE IF NOT EXISTS compte (
     courriel varchar(50),
     motpasse varchar(12),
-    nom      varchar(20),
-    avatar   varchar(40),
     nb_amis  integer,
     PRIMARY KEY (courriel)
 );
 
 # format des données à insérer
 INSERT INTO compte
-VALUES ('alice@ulaval.ca', '12345', 'Alice', 'MonChat.jpg', 0),
-       ('bob@ulaval.ca', 'qwerty', 'Bob', 'Grimlock.jpg', 0),
-       ('cedric@ulaval.ca', 'password', 'Cédric', 'smiley.gif', 0),
-       ('denise@ulaval.ca', '88888888', 'Denise', 'reine.jpg', 0);
+VALUES ('alice@ulaval.ca', '12345', 0),
+       ('bob@ulaval.ca', 'qwerty', 0),
+       ('cedric@ulaval.ca', 'password', 0),
+       ('denise@ulaval.ca', '88888888', 0);
 /*
  on a les clées qui permettent d'éviter les doublons, soit la combinaison utilisateur
  et ami en plus de les update et de les supprimer si ils sont supprimés dans la table compte,etc.
@@ -37,17 +46,80 @@ VALUES ('alice@ulaval.ca', '12345', 'Alice', 'MonChat.jpg', 0),
  */
 /*
  ici on a une entitée faible qui est liée au compte et à la catégorie
+ techniquement on devrait mettre aussi le courriel dans la publication, il est
+ en double techniquement, mais jsp comment faire d'autre
  */
 CREATE TABLE IF NOT EXISTS publication(
-    id int(100) AUTO_INCREMENT,
-    contenu varchar(500),
-    PRIMARY KEY (id)
-
+    id int AUTO_INCREMENT,
+    nb_like int,
+    date DATE,
+    courriel varchar(50),
+    PRIMARY KEY (id, courriel),
+    FOREIGN KEY (courriel)
+    REFERENCES compte(courriel)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS categorie(
     nom_categorie varchar(50),
+    date DATE,
     PRIMARY KEY (nom_categorie)
+);
+#modifier
+CREATE TABLE IF NOT EXISTS commentaire(
+    id int AUTO_INCREMENT,
+    date DATE,
+    id_publication integer,
+    PRIMARY KEY (id, id_publication),
+    FOREIGN KEY (id_publication)
+    REFERENCES publication(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+#je crois que le profil devrait exister seulement si le compte existe également
+CREATE TABLE IF NOT EXISTS profil(
+    surnom varchar(20),
+    date DATE,
+    courriel varchar(50),
+    PRIMARY KEY (surnom, courriel),
+    FOREIGN KEY (courriel)
+    REFERENCES compte(courriel)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS commenter
+(
+    id_commentaire int,
+    id_publication int,
+    couleur_texte enum('noir', 'gris', 'bleu', 'vert', 'rouge'),
+    contenu varchar(500),
+    police enum('calibri', 'times', 'arial'),
+    PRIMARY KEY (id_commentaire,id_publication),
+    FOREIGN KEY (id_commentaire)
+    REFERENCES commentaire(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (id_publication)
+    REFERENCES publication(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS associer
+(
+    courriel varchar(50),
+    id int,
+        PRIMARY KEY (courriel, id),
+    FOREIGN KEY (courriel)
+        REFERENCES compte(courriel)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (id)
+        REFERENCES commentaire(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS suivre
@@ -64,11 +136,47 @@ CREATE TABLE IF NOT EXISTS suivre
         ON UPDATE CASCADE
     );
 
+CREATE TABLE IF NOT EXISTS aimer
+(
+    courriel varchar(50),
+    id int,
+    PRIMARY KEY (courriel, id),
+    FOREIGN KEY (courriel)
+        REFERENCES compte(courriel)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (id)
+        REFERENCES publication(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS configurer
+(
+    courriel varchar(50),
+    surnom varchar(20),
+    avatar varchar(25),
+    couleur varchar(15),
+    animal varchar(15),
+    PRIMARY KEY (courriel, surnom),
+    FOREIGN KEY (courriel)
+        REFERENCES compte(courriel)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (surnom)
+        REFERENCES profil(surnom)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS publier
 (
     courriel      varchar(50),
     nom_categorie varchar(50),
-    id            int(100),
+    id            int,
+    contenu varchar(500),
+    police enum('calibri', 'times', 'arial'),
     PRIMARY KEY (courriel, nom_categorie, id),
     FOREIGN KEY (courriel)
         REFERENCES compte(courriel)
@@ -87,7 +195,6 @@ CREATE TABLE IF NOT EXISTS publier
 
 
 
-
 /*
  un compte utilisateur ne peut pas se suivre soi-même, on lance une erreur le cas échéant
  */
@@ -102,6 +209,27 @@ CREATE TRIGGER IF NOT EXISTS amour_propre_defendu
         END IF;
     END //
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER IF NOT EXISTS narcicisme_defendu
+    BEFORE INSERT ON aimer
+    FOR EACH ROW
+    BEGIN
+        DECLARE _courriel varchar(50);
+        SELECT courriel INTO _courriel FROM publier P WHERE NEW.id = P.id GROUP BY courriel;
+        IF _courriel = NEW.courriel THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'On ne peut pas aimer sa propre publication malheureusement.';
+        END IF;
+    END //
+DELIMITER ;
+
+/*CALL publier_dans_categorie('alice@ulaval.ca', 'animaux', 'allo', 'arial', '2023-03-09');
+INSERT INTO aimer VALUES ('alice@ulaval.ca', 1);
+SELECT courriel FROM aimer A WHERE
+    (SELECT id FROM publication P WHERE A.id = P.id) = 'alice@ulaval.ca';
+SELECT * FROM publication;
+SELECT * FROM publier;
+SELECT * FROM aimer;*/
 /*
  lorsqu'on ajoute un ami dans la liste suivre, on modifie le nombre d'amis
  */
@@ -114,6 +242,15 @@ CREATE TRIGGER IF NOT EXISTS insert_nb_amis
         #UPDATE compte C SET C.nb_amis = (SELECT count(*) utilisateur FROM suivre GROUP BY NEW.utilisateur)
             #WHERE (C.courriel = NEW.utilisateur);
         UPDATE compte C SET C.nb_amis = (SELECT nouveau_nb_amis(NEW.utilisateur)) WHERE (C.courriel = NEW.utilisateur);
+    END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER IF NOT EXISTS insert_nb_like
+    AFTER INSERT ON aimer
+    FOR EACH ROW
+    BEGIN
+        UPDATE publication P SET P.nb_like = (SELECT nouveau_nb_like(NEW.id)) WHERE (P.id = NEW.id);
     END //
 DELIMITER ;
 #SELECT nouveau_nb_amis('alice@ulaval.ca') from compte where courriel = 'alice@ulaval.ca';
@@ -134,6 +271,16 @@ CREATE TRIGGER IF NOT EXISTS delete_nb_amis
                    #FROM (SELECT utilisateur, COUNT(*) AS nb_amis
                          #FROM suivre S, compte C
                          #WHERE C.courriel = S.utilisateur GROUP BY utilisateur) N);
+    END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER IF NOT EXISTS delete_nb_like
+    AFTER DELETE ON aimer
+    FOR EACH ROW
+    BEGIN
+
+        UPDATE publication P SET P.nb_like = (SELECT nouveau_nb_like(OLD.id)) WHERE (P.id = OLD.id);
     END //
 DELIMITER ;
 
@@ -187,6 +334,27 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION IF NOT EXISTS nouveau_nb_like (id_publication integer)
+RETURNS integer
+BEGIN
+    DECLARE decompte INTEGER;
+    SELECT nb_like INTO decompte
+                   FROM (SELECT P.id, COUNT(*) AS nb_like
+                         FROM aimer A, publication P
+                         WHERE A.id = P.id GROUP BY P.id) N
+                   WHERE N.id = id_publication;
+    IF decompte IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN decompte;
+    END IF;
+END//
+DELIMITER ;
+
+
+
 /*
 SELECT nb_amis from (SELECT utilisateur, COUNT(*) AS nb_amis FROM suivre, compte WHERE courriel = suivre.utilisateur GROUP BY utilisateur) N WHERE N.utilisateur = 'alice@ulaval.ca';
 CREATE TEMPORARY TABLE IF NOT EXISTS nb_amis_compte (SELECT utilisateur, COUNT(*) AS nb_amis FROM suivre, compte WHERE courriel = suivre.utilisateur GROUP BY utilisateur);
@@ -230,23 +398,58 @@ CREATE PROCEDURE update_all_nb_amis ()
 BEGIN
     DECLARE var_courriel varchar(50);
     DECLARE var_nbamis varchar(50);
+    DECLARE tab_vide int(1);
     DECLARE lecture_termine integer DEFAULT FALSE;
     DECLARE curseur CURSOR FOR SELECT utilisateur, count(*) AS nb_amis FROM suivre GROUP BY utilisateur;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET lecture_termine = TRUE;
     OPEN curseur;
+    SET tab_vide = 1;
     lecteur: LOOP
         #CREATE TABLE IF NOT EXISTS liste (utilisateur varchar(100), nb_amis integer);
         FETCH curseur INTO var_courriel, var_nbamis;
         IF lecture_termine THEN
+            # si le compte n'existe plus et qu'il n'y a rien dans suivre, donc il n'y a rien dans curseur (tab_vide = 1)
+            IF tab_vide = 1 THEN
+                UPDATE compte C SET C.nb_amis = 0 WHERE C.nb_amis <> 0;
+            END IF ;
             LEAVE lecteur;
         END IF ;
         UPDATE compte C SET C.nb_amis = var_nbamis WHERE C.courriel = var_courriel;
+        SET tab_vide = 0;
         #INSERT INTO liste VALUES (var_courriel, var_nbamis);
     END LOOP lecteur;
     CLOSE curseur;
 END //
 DELIMITER ;
-#
+
+DELIMITER //
+CREATE PROCEDURE update_all_nb_like()
+BEGIN
+
+    DECLARE _nb_like integer;
+    DECLARE _id varchar(50);
+    DECLARE tab_vide int(1);
+    DECLARE lecture_termine integer DEFAULT FALSE;
+    DECLARE curseur CURSOR FOR SELECT id, count(*) AS nb_like FROM aimer GROUP BY id;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET lecture_termine = TRUE;
+    OPEN curseur;
+    SET tab_vide = 1;
+    lecteur: LOOP
+        FETCH curseur INTO _id, _nb_like;
+        IF lecture_termine THEN
+            # si le compte n'existe plus, la table aimer est vide, donc il n'y a rien dans curseur (tab_vide = 1)
+            IF tab_vide = 1 THEN
+                UPDATE publication P SET P.nb_like = 0 WHERE P.nb_like <> 0;
+            END IF;
+            LEAVE lecteur;
+        END IF ;
+        UPDATE publication P SET P.nb_like =_nb_like WHERE P.id = _id;
+        SET tab_vide = 0;
+    END LOOP lecteur;
+    CLOSE curseur;
+END //
+DELIMITER ;
+
 
 
 #CALL after_delete_update_nb_amis();
@@ -306,7 +509,8 @@ DELETE FROM publication WHERE id=2;*/
  4) il faudrait vérifier aussi que lorsque j'ajoute une publication, que nous devons passer par la procédure (contrôle d'accès)
  */
 DELIMITER //
-CREATE PROCEDURE publier_dans_categorie (IN _courriel varchar(50), IN _nom_categorie varchar(50), IN _contenu varchar(500))
+CREATE PROCEDURE publier_dans_categorie (IN _courriel varchar(50), IN _nom_categorie varchar(50), IN _contenu varchar(500),
+IN _police enum('calibri', 'times', 'arial'), IN _date DATE)
 BEGIN
 /*    DECLARE var_courriel varchar(50);
     DECLARE var_nbamis varchar(50);
@@ -336,20 +540,54 @@ BEGIN
     # on ajoute dans une nouvelle catégorie (celle spécifiée) pour éviter de faire planter le programme
     IF categorie_valide = 0 THEN
         #IF (SELECT(nom_categorie) FROM categorie C WHERE 'autre' = C.nom_categorie) IS NULL THEN
-        INSERT INTO categorie VALUES (_nom_categorie);
+        INSERT INTO categorie VALUES (_nom_categorie, _date);
         #END IF;
         #SET _nom_categorie = 'autre';
     END IF;
     # on ajoute d'abord la publication et on retrace l'id pour la mettre dans la relation suivre
-    INSERT INTO publication(contenu) VALUES ( _contenu);
+    INSERT INTO publication(nb_like, date, courriel) VALUES (0,_date, _courriel);
     SELECT MAX(P.id) INTO _id FROM publication P;
-    INSERT INTO publier(courriel, nom_categorie, id) VALUES (_courriel, _nom_categorie, _id);
+    INSERT INTO publier(courriel, nom_categorie, id, contenu, police) VALUES (_courriel, _nom_categorie, _id, _contenu, _police);
 END //
 DELIMITER ;
 
-#SELECT MAX(P.id) FROM publication P;
 
-/*CALL publier_dans_categorie('alice@ulaval.ca', 'animaux', 'allo');
+# quand on supprime un compte, on doit mettre à jour tous les nb_amis et nb_like (s'assurant que tout est correct)
+DELIMITER //
+CREATE PROCEDURE supprimer_compte (IN _courriel varchar(50))
+    BEGIN
+        DELETE FROM compte WHERE courriel = _courriel;
+        CALL update_all_nb_amis();
+        CALL update_all_nb_like();
+    END //
+DELIMITER ;
+
+
+/*#SELECT MAX(P.id) FROM publication P;
+
+CALL publier_dans_categorie('alice@ulaval.ca', 'animaux', 'allo', 'arial', '2023-03-09');
+CALL publier_dans_categorie('cedric@ulaval.ca', 'animaux', 'allo', 'arial', '2023-03-10');
+
+
+#INSERT INTO aimer value ('alice@ulaval.ca', 1);
+
+INSERT INTO aimer value ('bob@ulaval.ca', 1);
+INSERT INTO aimer value ('denise@ulaval.ca', 1);
+INSERT INTO aimer value ('bob@ulaval.ca', 2);
+INSERT INTO suivre value ('alice@ulaval.ca', 'bob@ulaval.ca');
+INSERT INTO suivre value ('cedric@ulaval.ca', 'bob@ulaval.ca');
+#CALL supprimer_compte('bob@ulaval.ca');
+CALL supprimer_compte('cedric@ulaval.ca');
+#CALL update_all_nb_amis();
+SELECT * FROM suivre;
+SELECT * FROM compte;
 SELECT * FROM publier;
 SELECT * FROM categorie;
+SELECT * FROM publication;
+SELECT * FROM aimer;
+#SELECT utilisateur, count(*) AS nb_amis FROM suivre GROUP BY utilisateur;
+SELECT nouveau_nb_like(1);
+
+DELETE FROM aimer WHERE courriel = 'bob@ulaval.ca';
+SELECT * FROM aimer;
 SELECT * FROM publication;*/

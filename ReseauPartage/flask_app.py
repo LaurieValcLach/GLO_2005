@@ -23,5 +23,27 @@ def profil_route():
     return profil.profil()
 
 
+@app.route("/addPost/", methods=["POST"])
+def addPost():
+    data = request.json
+    postText = data["text"]
+    insertPost(postText)
+    response = {
+        "status": 200
+    }
+    return jsonify(response)
+
+
+@app.route("/posts/", methods=["GET"])
+def getPosts():
+    posts = selectPost()
+    response = {
+        "status": 200,
+        "posts": posts
+    }
+
+    return jsonify(response)
+
+
 if __name__ == "__main__":
     app.run(port=8080)

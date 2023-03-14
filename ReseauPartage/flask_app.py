@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from Controllers import Comment, Post, Utilisateurs
+import app
 
-app = Flask(__name__)
 ProfileUtilisateur = {}
 
 
@@ -14,9 +14,11 @@ def main():
 def login_route():
     return login.login()
 
+
 @app.route("/home")
 def home_route():
     return home.home()
+
 
 @app.route("/profil")
 def profil_route():

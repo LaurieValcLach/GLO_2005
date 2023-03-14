@@ -5,6 +5,7 @@ validations avec la BD
 """
 from ReseauPartage.Myconfig.Password import Password
 from ReseauPartage.Myconfig.database import database_connection
+from flask import make_respond
 
 
 class Authentification:
@@ -12,7 +13,7 @@ class Authentification:
         self.connect = database_connection()
 
     def login(self, email, password):
-        select_password = "SELECT motpasse FROM Utilisateurs WHERE courriel=%s"
+        select_password = "SELECT motpasse FROM Utilisateurs WHERE courriel=%s AND nom=%s"
         self.cursor.execute(select_password, email)
         row = self.cursor.fetchone()
         if row is None:
@@ -26,15 +27,20 @@ class Authentification:
             print("Login successful")
         else:
             print("Invalid password")
+
     def logout(self):
-        pass
+        response = make_respond("Logged out")
+        response.set_cookie('session', '', expires=0)  # supprimer le cookie 'session'
+        return response
 
     def register(self, email, password, name):
         select_users = "SELECT * FROM Utilisateurs WHERE courriel=%s"
+
         self.cursor.execute(select_users, email)
-        user = self.cursor.fetchone()
-        if user is not None:
+        user_email = self.cursor.fetchone()
+        if user_email is not None:
             raise ValueError("L'utilisateur existe deja")
+
         password_object = Password(password)
         hashed_password = password_object.hashed_password
 
